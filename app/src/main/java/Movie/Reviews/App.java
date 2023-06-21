@@ -3,10 +3,82 @@
  */
 package Movie.Reviews;
 
+import Activity.ATAUserHandler;
+import Activity.MenuOption;
+import Activity.MovieActivity;
+import Exception.MovieNotFoundException;
+
 public class App {
 
+    private ATAUserHandler inputHandler;
+    private MovieActivity movieActivity;
 
     public static void main(String[] args) {
-    
+        App app = new App(new ATAUserHandler(), new MovieActivity());
+        app.run();
+    }
+
+    public App(ATAUserHandler inputHandler, MovieActivity movieActivity) {
+        this.inputHandler = inputHandler;
+        this.movieActivity = movieActivity;
+    }
+
+    public void run() {
+        String userResponse = "";
+        do {
+            System.out.println(userResponse);
+            System.out.println(MenuOption.renderMenu());
+            userResponse = handleUserRequest();
+        } while(userResponse != MenuOption.QUIT.toString());
+    }
+
+    private String handleUserRequest() {
+        int menuOptionNum = inputHandler.getInteger(
+                MenuOption.min(), MenuOption.max(), "Enter an option> ");
+
+        MenuOption option = MenuOption.fromOptionNum(menuOptionNum);
+        switch (option) {
+            case QUIT:
+                return option.toString();
+
+            case ADD_MOVIE:
+                System.out.println("Enter a Movie title");
+                String title = inputHandler.getString();
+                System.out.println("Enter a Director");
+                String director = inputHandler.getString();
+                System.out.println("Enter an Id");
+                String ID = inputHandler.getString();
+
+                movieActivity.addMovie(title, director, ID);
+
+            case ADD_MOVIE_REVIEW:
+
+                System.out.println("Enter a Movie title");
+                String title2 = inputHandler.getString();
+                System.out.println("Enter a Director");
+                String director2 = inputHandler.getString();
+                System.out.println("Enter an Id");
+                String ID2 = inputHandler.getString();
+                System.out.println("Enter a Review");
+                String review = inputHandler.getString();
+
+                movieActivity.addMovieReview(title2, director2, ID2, review);
+
+            case LOOK_UP_MOVIE_BY_TITLE:
+                System.out.println("Enter a Movie title");
+                String title3 = inputHandler.getString();
+
+                try{
+                    movieActivity.lookUpMovieByTitle(title3).toString();
+                }
+                catch (MovieNotFoundException e){
+                   return "Movie not found";
+                }
+            default:
+                return "Unimplemented Operation!";
+        }
     }
 }
+
+
+

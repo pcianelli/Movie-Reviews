@@ -1,11 +1,13 @@
 package Types;
 
+import java.util.Objects;
+
 public class Movie {
     private String title;
     private String director;
-    private int ID;
+    private String ID;
 
-    public Movie(String title, String director, int ID) {
+    public Movie(String title, String director, String ID) {
         this.title = title;
         this.director = director;
         this.ID = ID;
@@ -27,11 +29,31 @@ public class Movie {
         this.director = director;
     }
 
-    public int getID() {
+    public String getID() {
         return ID;
     }
 
-    public void setID(int ID) {
+    public void setID(String ID) {
         this.ID = ID;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Movie movie = (Movie) o;
+        return Objects.equals(title, movie.title) && Objects.equals(director, movie.director) && Objects.equals(ID, movie.ID);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, director, ID);
+    }
+
+    @Override
+    public String toString() {
+        return "title= " + title + "\n" +
+                ", director= " + director + "\n" +
+                ", ID= " + ID;
     }
 }
